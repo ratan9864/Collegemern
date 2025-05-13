@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ID Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        form {
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            width: 400px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 8px 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #idCard {
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            width: 300px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            text-align: center;
+            display: none;
+        }
+
+        #idCard img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #idCard {
+                visibility: visible;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="text" id="dob" name="dob" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender" required><br><br>
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+        <button type="submit">Generate ID Card</button>
+    </form>
+
+    <div id="idCard">
+        <img id="profileImage" src="#" alt="Profile Image">
+        <p>Name: <span id="displayName"></span></p>
+        <p>Date of Birth: <span id="displayDob"></span></p>
+        <p>Gender: <span id="displayGender"></span></p>
+    </div>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let dob = document.getElementById("dob").value;
+            let gender = document.getElementById("gender").value;
+            let imageFile = document.getElementById("image").files[0];
+
+            let reader = new FileReader();
+            reader.onload = function() {
+                let profileImage = document.getElementById("profileImage");
+                profileImage.src = reader.result;
+
+                document.getElementById("displayName").textContent = name;
+                document.getElementById("displayDob").textContent = dob;
+                document.getElementById("displayGender").textContent = gender;
+
+                document.getElementById("idCard").style.display = "block";
+
+                window.print();
+            }
+            reader.readAsDataURL(imageFile);
+        });
+    </script>
+</body>
+</html>
